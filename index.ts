@@ -1,10 +1,20 @@
+export interface Message {
+  // subscribing to channel
+  subscribeChannel?: string;
+  unsubscribeChannel?: string;
+
+  //sending message
+  messageChannel?: string;
+  messageBody?: string;
+}
+
 export default class UDNFrontend {
   private ws: WebSocket | undefined;
 
   // handlers
   private connectionHandler = () => {};
   private disconnectionHandler = () => {};
-  private messageHandler = (data: Object) => {};
+  private messageHandler = (data: Message) => {};
 
   // init
   set onconnect(handler: () => void) {
@@ -13,7 +23,7 @@ export default class UDNFrontend {
   set ondisconnect(handler: () => void) {
     this.disconnectionHandler = handler;
   }
-  set onmessage(handler: (data: Object) => void) {
+  set onmessage(handler: (data: Message) => void) {
     this.messageHandler = handler;
   }
 
