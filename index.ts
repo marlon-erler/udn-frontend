@@ -58,5 +58,3 @@ export class UDNFrontend {
     return this.send(messageObject);
   }
 }
-
-class myFrontend extends UDNFrontend {}
