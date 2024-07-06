@@ -1,21 +1,19 @@
-type Callback = () => void;
-
-export class UDNFrontend {
+export default class UDNFrontend {
   private ws: WebSocket | undefined;
 
   // handlers
-  private connectionHandler: Callback = () => null;
-  private disconnectionHandler: Callback = () => null;
-  private messageHandler: Callback = () => null;
+  private connectionHandler = () => {};
+  private disconnectionHandler = () => {};
+  private messageHandler = (data: Object) => {};
 
   // init
-  set onconnect(handler: Callback) {
+  set onconnect(handler: () => void) {
     this.connectionHandler = handler;
   }
-  set ondisconnect(handler: Callback) {
+  set ondisconnect(handler: () => void) {
     this.disconnectionHandler = handler;
   }
-  set onmessage(handler: Callback) {
+  set onmessage(handler: (data: Object) => void) {
     this.messageHandler = handler;
   }
 
@@ -33,7 +31,11 @@ export class UDNFrontend {
     this.ws = new WebSocket(address);
     this.ws.addEventListener("open", this.connectionHandler);
     this.ws.addEventListener("close", this.disconnectionHandler);
-    this.ws.addEventListener("message", this.messageHandler);
+    this.ws.addEventListener("message", (message) => {
+      const dataString = message.data.toString();
+      const data = JSON.parse(dataString);
+      this.messageHandler(data);
+    });
   }
 
   sendMessage(channel: string, body: string): boolean {
