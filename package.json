@@ -1,6 +1,6 @@
 {
-  "name": "udn-ts",
-  "version": "1.0.1",
+  "name": "udn-frontend",
+  "version": "1.0.0",
   "description": "TypeScript library for UDN apps",
   "main": "index.ts",
   "scripts": {
@@ -8,12 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/marlon-erler/udn-ts.git"
+    "url": "git+https://github.com/marlon-erler/udn-frontend.git"
   },
   "author": "marlon-erler",
   "license": "SEE LICENSE IN LICENSE",
   "bugs": {
-    "url": "https://github.com/marlon-erler/udn-ts/issues"
+    "url": "https://github.com/marlon-erler/udn-frontend/issues"
   },
-  "homepage": "https://github.com/marlon-erler/udn-ts#readme"
+  "homepage": "https://github.com/marlon-erler/udn-frontend#readme"
 }

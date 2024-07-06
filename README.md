@@ -1,12 +1,12 @@
-# udn-ts
+# udn-frontend
 TypeScript library for [UDN](https://github.com/marlon-erler/universal-decentralized-network) apps
 
 # Install
-`npm install udn-ts`
+`npm install udn-frontend`
 
 # Usage
 ```TypeScript
-import UDNFrontend from "udn-ts";
+import UDNFrontend from "udn-frontend";
 
 // setup
 const UDN = new UDNFrontend();
