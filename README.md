@@ -16,7 +16,7 @@ UDN.onconnect = () => {
 UDN.ondisconnect = () => {
   console.log("disconnected!");
 };
-UDN.onmessage = (data) => {
+UDN.onmessage = (data: Message) => {
   console.log(data);
 };
 
@@ -26,4 +26,39 @@ UDN.connect("ws://192.168.0.69:1234");
 UDN.subscribe("my-channel");
 UDN.sendMessage("my-channel", "Hello, world!");
 UDN.unsubscribe("my-channel");
+```
+
+# Type Reference
+```TypeScript
+export interface Message {
+  // subscribing to channel
+  subscribeChannel?: string;
+  unsubscribeChannel?: string;
+  subscribed?: boolean; // sent by the server to confirm subscription
+
+  //sending message
+  messageChannel?: string;
+  messageBody?: string;
+}
+
+export default class UDNFrontend {
+  private ws: WebSocket | undefined;
+
+  // handlers
+  private connectionHandler = () => {};
+  private disconnectionHandler = () => {};
+  private messageHandler = (data: Message) => {};
+
+  // init
+  set onconnect(handler: () => void);
+  set ondisconnect(handler: () => void);
+  set onmessage(handler: (data: Message) => void);
+
+  // methods
+  connect(address: string): void;
+  sendMessage(channel: string, body: string): boolean; // true if message is sent
+  subscribe(channel: string): boolean; // true if request is sent, NOT inherently when subscribed
+  unsubscribe(channel: string): boolean; // true if request is sent, NOT inherently when unsubscribed
+}
+
 ```
