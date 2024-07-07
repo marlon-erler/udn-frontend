@@ -1,10 +1,13 @@
 # udn-frontend
+
 TypeScript library for [UDN](https://github.com/marlon-erler/universal-decentralized-network) apps
 
 # Install
+
 `npm install udn-frontend`
 
 # Usage
+
 ```TypeScript
 import UDNFrontend from "udn-frontend";
 
@@ -29,6 +32,7 @@ UDN.unsubscribe("my-channel");
 ```
 
 # Type Reference
+
 ```TypeScript
 export interface Message {
   // subscribing to channel
@@ -60,5 +64,14 @@ export default class UDNFrontend {
   subscribe(channel: string): boolean; // true if request is sent, NOT inherently when subscribed
   unsubscribe(channel: string): boolean; // true if request is sent, NOT inherently when unsubscribed
 }
-
 ```
+
+# Changelog
+
+## 1.0.1
+
+- minor fixes
+
+## 1.0.2
+
+- minor fixes
