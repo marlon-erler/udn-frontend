@@ -4,9 +4,10 @@ export interface Message {
 
   // mailbox
   requestingMailboxSetup?: boolean;
+  requestedMailbox?: string;
+  deletingMailbox?: string;
   assignedMailboxId?: string; // sent by server
   connectedMailboxId?: string; // sent by server
-  requestedMailbox?: string;
 
   // subscribing to channel
   subscribeChannel?: string;
@@ -68,7 +69,7 @@ export default class UDNFrontend {
 
       if (data.assignedMailboxId) {
         return this.mailboxHandler(data.assignedMailboxId);
-      } else if (data.connectedMailboxId){
+      } else if (data.connectedMailboxId) {
         return this.mailboxConnectionHandler(data.assignedMailboxId);
       } else {
         this.messageHandler(data);
@@ -115,6 +116,13 @@ export default class UDNFrontend {
   connectMailbox(mailboxId: string): boolean {
     const messageObject = {
       requestedMailbox: mailboxId,
+    };
+    return this.send(messageObject);
+  }
+
+  deleteMailbox(mailboxId: string): boolean {
+    const messageObject = {
+      deletingMailbox: mailboxId,
     };
     return this.send(messageObject);
   }

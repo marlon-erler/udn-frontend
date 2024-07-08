@@ -40,9 +40,9 @@ UDN.unsubscribe("my-channel");
 UDN.onmailbox = (mailboxId: string) => {
   UDN.connectMailbox(mailboxId);
 }
+UDN.onmailboxconnect = (mailboxId: string) => {
+  UDN.deleteMailbox(mailboxId);
+}
 
 UDN.requestMailbox();
-UDN.onmailboxconnect = (mailboxId: string) => {
-  console.log("mailbox connected")
-}
 ```
