@@ -37,11 +37,14 @@ UDN.subscribe("my-channel");
 UDN.unsubscribe("my-channel");
 
 // mailbox
-UDN.onmailbox = (mailboxId: string) => {
+UDN.onmailboxcreate = (mailboxId: string) => {
   UDN.connectMailbox(mailboxId);
 }
 UDN.onmailboxconnect = (mailboxId: string) => {
   UDN.deleteMailbox(mailboxId);
+}
+UDN.onmailboxdelete = (mailboxId: string) => {
+  console.log("mailbox deleted");
 }
 
 UDN.requestMailbox();
@@ -56,3 +59,4 @@ UDN.requestMailbox();
 ## 1.0.6
 
 - add error handling with `connect()`
+- add `onmailboxdelete` listener

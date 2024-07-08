@@ -8,11 +8,12 @@ export interface Message {
   deletingMailbox?: string;
   assignedMailboxId?: string; // sent by server
   connectedMailboxId?: string; // sent by server
+  deletedMailbox?: string; // sent by server
 
   // subscribing to channel
   subscribeChannel?: string;
   unsubscribeChannel?: string;
-  subscribed?: boolean; // sent by server to confirm subscription
+  subscribed?: boolean; // sent by server
 
   //sending message
   messageChannel?: string;
@@ -28,6 +29,7 @@ export default class UDNFrontend {
   private messageHandler = (data: Message) => {};
   private mailboxHandler = (mailboxId: string) => {};
   private mailboxConnectionHandler = (mailboxId: string) => {};
+  private mailboxDeleteHandler = (mailboxId: string) => {};
 
   // INIT
   set onconnect(handler: () => void) {
@@ -39,11 +41,14 @@ export default class UDNFrontend {
   set onmessage(handler: (data: Message) => void) {
     this.messageHandler = handler;
   }
-  set onmailbox(handler: (mailboxId: string) => void) {
+  set onmailboxcreate(handler: (mailboxId: string) => void) {
     this.mailboxHandler = handler;
   }
   set onmailboxconnect(handler: (mailboxId: string) => void) {
     this.mailboxConnectionHandler = handler;
+  }
+  set onmailboxdelete(handler: (mailboxId: string) => void) {
+    this.mailboxDeleteHandler = handler;
   }
 
   // UTILITY METHODS
@@ -61,23 +66,25 @@ export default class UDNFrontend {
     try {
       this.disconnect();
 
-    this.ws = new WebSocket(address);
-    this.ws.addEventListener("open", this.connectionHandler);
-    this.ws.addEventListener("close", this.disconnectionHandler);
-    this.ws.addEventListener("message", (message) => {
-      const dataString = message.data.toString();
-      const data = JSON.parse(dataString);
+      this.ws = new WebSocket(address);
+      this.ws.addEventListener("open", this.connectionHandler);
+      this.ws.addEventListener("close", this.disconnectionHandler);
+      this.ws.addEventListener("message", (message) => {
+        const dataString = message.data.toString();
+        const data = JSON.parse(dataString);
 
-      if (data.assignedMailboxId) {
-        return this.mailboxHandler(data.assignedMailboxId);
-      } else if (data.connectedMailboxId) {
-        return this.mailboxConnectionHandler(data.connectedMailboxId);
-      } else {
-        this.messageHandler(data);
-      }
-    });
+        if (data.assignedMailboxId) {
+          return this.mailboxHandler(data.assignedMailboxId);
+        } else if (data.connectedMailboxId) {
+          return this.mailboxConnectionHandler(data.connectedMailboxId);
+        } else if (data.deletedMailbox) {
+          return this.mailboxDeleteHandler(data.deletedMailbox);
+        } else {
+          this.messageHandler(data);
+        }
+      });
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 
