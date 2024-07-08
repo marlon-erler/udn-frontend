@@ -52,3 +52,7 @@ UDN.requestMailbox();
 ## 1.0.5
 
 - add mailbox support
+
+## 1.0.6
+
+- add error handling with `connect()`

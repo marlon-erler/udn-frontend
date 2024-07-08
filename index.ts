@@ -58,7 +58,8 @@ export default class UDNFrontend {
   // PUBLIC METHODS
   // connection
   connect(address: string): void {
-    this.disconnect();
+    try {
+      this.disconnect();
 
     this.ws = new WebSocket(address);
     this.ws.addEventListener("open", this.connectionHandler);
@@ -75,6 +76,9 @@ export default class UDNFrontend {
         this.messageHandler(data);
       }
     });
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   disconnect(): void {
