@@ -70,7 +70,7 @@ export default class UDNFrontend {
       if (data.assignedMailboxId) {
         return this.mailboxHandler(data.assignedMailboxId);
       } else if (data.connectedMailboxId) {
-        return this.mailboxConnectionHandler(data.assignedMailboxId);
+        return this.mailboxConnectionHandler(data.connectedMailboxId);
       } else {
         this.messageHandler(data);
       }

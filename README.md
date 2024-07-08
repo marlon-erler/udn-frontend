@@ -46,3 +46,9 @@ UDN.onmailboxconnect = (mailboxId: string) => {
 
 UDN.requestMailbox();
 ```
+
+# Changelog
+
+## 1.0.5
+
+- add mailbox support
