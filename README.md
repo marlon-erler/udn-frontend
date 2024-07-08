@@ -60,6 +60,7 @@ export default class UDNFrontend {
 
   // methods
   connect(address: string): void;
+  disconnect(address: string): void;
   sendMessage(channel: string, body: string): boolean; // true if message is sent
   subscribe(channel: string): boolean; // true if request is sent, NOT inherently when subscribed
   unsubscribe(channel: string): boolean; // true if request is sent, NOT inherently when unsubscribed
@@ -75,3 +76,7 @@ export default class UDNFrontend {
 ## 1.0.2
 
 - minor fixes
+
+## 1.0.3
+
+- add `disconnect()` method

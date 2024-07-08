@@ -39,6 +39,8 @@ export default class UDNFrontend {
 
   // public methods
   connect(address: string): void {
+    this.disconnect();
+
     this.ws = new WebSocket(address);
     this.ws.addEventListener("open", this.connectionHandler);
     this.ws.addEventListener("close", this.disconnectionHandler);
@@ -47,6 +49,10 @@ export default class UDNFrontend {
       const data = JSON.parse(dataString);
       this.messageHandler(data);
     });
+  }
+
+  disconnect(): void {
+    this.ws?.close();
   }
 
   sendMessage(channel: string, body: string): boolean {
