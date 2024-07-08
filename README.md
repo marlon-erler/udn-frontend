@@ -60,3 +60,7 @@ UDN.requestMailbox();
 
 - add error handling with `connect()`
 - add `onmailboxdelete` listener
+
+## 1.0.7
+
+- add `uuid` property to Message

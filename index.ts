@@ -1,4 +1,6 @@
 export interface Message {
+  uuid?: string; // to be assigned by
+
   // connecting to server
   requestingServerConnection?: boolean;
 
