@@ -1,8 +1,17 @@
 export interface Message {
+  // connecting to server
+  requestingServerConnection?: boolean;
+
+  // mailbox
+  requestingMailboxSetup?: boolean;
+  assignedMailboxId?: string; // sent by server
+  connectedMailboxId?: string; // sent by server
+  requestedMailbox?: string;
+
   // subscribing to channel
   subscribeChannel?: string;
   unsubscribeChannel?: string;
-  subscribed?: boolean; // sent by the server to confirm subscription
+  subscribed?: boolean; // sent by server to confirm subscription
 
   //sending message
   messageChannel?: string;
@@ -10,14 +19,16 @@ export interface Message {
 }
 
 export default class UDNFrontend {
-  private ws: WebSocket | undefined;
+  ws: WebSocket | undefined;
 
-  // handlers
+  // HANDLERS
   private connectionHandler = () => {};
   private disconnectionHandler = () => {};
   private messageHandler = (data: Message) => {};
+  private mailboxHandler = (mailboxId: string) => {};
+  private mailboxConnectionHandler = (mailboxId: string) => {};
 
-  // init
+  // INIT
   set onconnect(handler: () => void) {
     this.connectionHandler = handler;
   }
@@ -27,9 +38,15 @@ export default class UDNFrontend {
   set onmessage(handler: (data: Message) => void) {
     this.messageHandler = handler;
   }
+  set onmailbox(handler: (mailboxId: string) => void) {
+    this.mailboxHandler = handler;
+  }
+  set onmailboxconnect(handler: (mailboxId: string) => void) {
+    this.mailboxConnectionHandler = handler;
+  }
 
-  // utility methods
-  private send(messageObject: Object): boolean {
+  // UTILITY METHODS
+  private send(messageObject: Message): boolean {
     if (this.ws == undefined) return false;
 
     const messageString = JSON.stringify(messageObject);
@@ -37,7 +54,8 @@ export default class UDNFrontend {
     return true;
   }
 
-  // public methods
+  // PUBLIC METHODS
+  // connection
   connect(address: string): void {
     this.disconnect();
 
@@ -47,7 +65,14 @@ export default class UDNFrontend {
     this.ws.addEventListener("message", (message) => {
       const dataString = message.data.toString();
       const data = JSON.parse(dataString);
-      this.messageHandler(data);
+
+      if (data.assignedMailboxId) {
+        return this.mailboxHandler(data.assignedMailboxId);
+      } else if (data.connectedMailboxId){
+        return this.mailboxConnectionHandler(data.assignedMailboxId);
+      } else {
+        this.messageHandler(data);
+      }
     });
   }
 
@@ -55,6 +80,7 @@ export default class UDNFrontend {
     this.ws?.close();
   }
 
+  // message
   sendMessage(channel: string, body: string): boolean {
     const messageObject = {
       messageChannel: channel,
@@ -63,6 +89,7 @@ export default class UDNFrontend {
     return this.send(messageObject);
   }
 
+  // subscription
   subscribe(channel: string): boolean {
     const messageObject = {
       subscribeChannel: channel,
@@ -73,6 +100,21 @@ export default class UDNFrontend {
   unsubscribe(channel: string): boolean {
     const messageObject = {
       unsubscribeChannel: channel,
+    };
+    return this.send(messageObject);
+  }
+
+  // mailbox
+  requestMailbox(): boolean {
+    const messageObject = {
+      requestingMailboxSetup: true,
+    };
+    return this.send(messageObject);
+  }
+
+  connectMailbox(mailboxId: string): boolean {
+    const messageObject = {
+      requestedMailbox: mailboxId,
     };
     return this.send(messageObject);
   }
