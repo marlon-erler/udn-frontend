@@ -56,6 +56,7 @@ export default class UDNFrontend {
   // UTILITY METHODS
   private send(messageObject: Message): boolean {
     if (this.ws == undefined) return false;
+    if (this.ws.readyState != 1) return false;
 
     const messageString = JSON.stringify(messageObject);
     this.ws.send(messageString);

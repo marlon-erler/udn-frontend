@@ -64,3 +64,7 @@ UDN.requestMailbox();
 ## 1.0.7
 
 - add `uuid` property to Message
+
+## 1.0.8
+
+- fix bug where messages would be considered sent even if the WebSocket is not ready
